@@ -11,6 +11,7 @@ class App extends Component {
     categories: getCategories(),
     notes: getInitialNotes(),
     showForm: false,
+    selectedCategory: null,
   };
 
   handleShowForm = () => {
@@ -34,6 +35,12 @@ class App extends Component {
     });
   };
 
+  handleCategory = categoryName => {
+    this.setState({
+      selectedCategory: categoryName,
+    });
+  };
+
   render() {
     return (
       <>
@@ -46,13 +53,17 @@ class App extends Component {
         ) : null}
         <main className="main">
           <aside>
-            <Category categories={this.state.categories} />
+            <Category
+              onCategory={this.handleCategory}
+              categories={this.state.categories}
+            />
           </aside>
           <section>
             <Note
               onDelete={this.handleDelete}
               categories={this.state.categories}
               notes={this.state.notes}
+              selectedCategory={this.state.selectedCategory}
             />
           </section>
         </main>

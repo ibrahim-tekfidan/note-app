@@ -3,7 +3,13 @@ import React, { Component } from 'react';
 class Note extends Component {
   state = {};
   render() {
-    const { notes, categories, onDelete } = this.props;
+    let { notes } = this.props;
+    const { selectedCategory, onDelete, categories } = this.props;
+
+    notes = selectedCategory
+      ? notes.filter(n => n.category === selectedCategory)
+      : notes;
+
     return (
       <ul>
         {notes.map(note => (
