@@ -16,11 +16,9 @@ class Note extends Component {
     const { pageSize, currentPage } = this.state;
     const { onDelete, categories } = this.props;
 
-    // Kategorilere ayırmak için
-    let categoriseNotes = this.categoriseNote();
+    const categoriseNotes = this.categoriseNote();
     let notes = categoriseNotes;
 
-    // Sayfalama yapmak için
     if (categoriseNotes.length >= pageSize)
       notes = this.paginateNote(categoriseNotes);
 
@@ -31,19 +29,21 @@ class Note extends Component {
             <li key={note.id} className="note">
               <p>
                 {note.text}
-                <a className="source" href={note.source} target="_blank">
-                  (Source)
+                <a
+                  className="source"
+                  href={note.source ? note.source : undefined}
+                  target="_blank"
+                >
+                  ({this.formatSource(note)})
                 </a>
               </p>
               <span
                 style={{
-                  backgroundColor: categories.find(
-                    category => category.name === note.category
-                  ).color,
+                  backgroundColor: this.formatCategoryStyle(note),
                 }}
                 className="tag"
               >
-                {note.category}
+                {this.formatCategoryName(note)}
               </span>
               <div className="complete-button">
                 <button onClick={() => onDelete(note)}>Tamamla ✅</button>
@@ -71,8 +71,23 @@ class Note extends Component {
 
   paginateNote(notes) {
     const { currentPage, pageSize } = this.state;
-    const staterIndex = (currentPage - 1) * pageSize;
-    return _(notes).slice(staterIndex).take(pageSize).value();
+    const startIndex = (currentPage - 1) * pageSize;
+    return _(notes).slice(startIndex).take(pageSize).value();
+  }
+
+  formatCategoryStyle(note) {
+    return note.category
+      ? this.props.categories.find(category => category.name === note.category)
+          .color
+      : '';
+  }
+
+  formatCategoryName(note) {
+    return note.category ? note.category : 'No Category';
+  }
+
+  formatSource(note) {
+    return note.source ? 'Source' : 'No source';
   }
 }
 
