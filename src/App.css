@@ -220,3 +220,32 @@ ul {
     width: auto;
   }
 }
+
+/* PAGINATION */
+.pagination {
+  margin-top: 32px;
+  grid-column: 2;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-page {
+  /* center the text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-style: none;
+  background: inherit;
+  color: inherit;
+  font-family: 'Coiny', sans-serif;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+.btn-page-active {
+  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
+}
