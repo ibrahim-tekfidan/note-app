@@ -25,8 +25,8 @@ class Note extends Component {
       notes = this.paginateNote(categoriseNotes);
 
     return (
-      <>
-        <ul>
+      <div className="container-note-pagination">
+        <ul className="notes">
           {notes.map(note => (
             <li key={note.id} className="note">
               <p>
@@ -57,7 +57,7 @@ class Note extends Component {
           onPageChange={this.handlePageChange}
           notesCount={categoriseNotes}
         />
-      </>
+      </div>
     );
   }
 

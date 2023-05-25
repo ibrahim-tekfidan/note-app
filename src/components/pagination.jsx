@@ -8,7 +8,6 @@ class Pagination extends Component {
     const { notesCount, pageSize, onPageChange, currentPage } = this.props;
 
     const pagesCount = Math.ceil(notesCount.length / pageSize);
-    if (pagesCount === 1) return null;
     const pages = _.range(1, pagesCount + 1);
 
     return (
