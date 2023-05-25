@@ -42,28 +42,24 @@ class App extends Component {
   };
 
   render() {
+    const { showForm, categories, notes, selectedCategory } = this.state;
     return (
       <>
-        <Header
-          showForm={this.state.showForm}
-          onShowForm={this.handleShowForm}
-        />
-        {this.state.showForm ? (
-          <Form addData={this.addData} categories={this.state.categories} />
-        ) : null}
+        <Header showForm={showForm} onShowForm={this.handleShowForm} />
+        {showForm && <Form addData={this.addData} categories={categories} />}
         <main className="main">
           <aside>
             <Category
               onCategory={this.handleCategory}
-              categories={this.state.categories}
+              categories={categories}
             />
           </aside>
           <section>
             <Note
               onDelete={this.handleDelete}
-              categories={this.state.categories}
-              notes={this.state.notes}
-              selectedCategory={this.state.selectedCategory}
+              categories={categories}
+              notes={notes}
+              selectedCategory={selectedCategory}
             />
           </section>
         </main>
