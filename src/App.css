@@ -75,6 +75,11 @@ h1 {
   gap: 24px;
 }
 
+.note p {
+  max-width: 50ch;
+  word-wrap: break-word;
+}
+
 @media (max-width: 1200px) {
   .note {
     flex-direction: column;
