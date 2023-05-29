@@ -3,5 +3,6 @@ config/
 views/
 middleware/
 async/
+mongoose/
 eklenenler
 .DS_Store
