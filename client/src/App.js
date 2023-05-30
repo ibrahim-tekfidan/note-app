@@ -73,9 +73,7 @@ class App extends Component {
     const { showForm, categories, notes, selectedCategory } = this.state;
     return (
       <>
-      <div className='warning'>🚨 UYARI: Formda boş alan bırakıldığında veya source yanlış formatta girildiğinde sistem çökmektedir. 🚨
-      <br></br> 
-      Bir sonraki committe problem çözülecektir...🎉</div>
+      
         <Header showForm={showForm} onShowForm={this.handleShowForm} />
         {showForm && <Form addData={this.addData} categories={categories} />}
         <main className="main">

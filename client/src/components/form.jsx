@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Joi from 'joi';
 
 class Form extends Component {
   state = {
@@ -10,16 +11,27 @@ class Form extends Component {
     errors: {},
   };
 
-  validate = () => {
-    return { text: 'Text is required' };
-  };
+  schema = Joi.object({
+    text: Joi.string().required().label('Text'),
+    source: Joi.string().uri().required().label('Source'),
+    category: Joi.string().required().label('Category'),
+  });
 
   handleSubmit = event => {
     event.preventDefault();
 
-    // const errors = this.validate();
-    // this.setState({ errors });
-    // if (errors) return;
+    const { error } = this.schema.validate(this.state.form, {
+      abortEarly: false,
+    });
+
+    if (error) {
+      const errors = {};
+      error.details.forEach(detail => {
+        errors[detail.context.key] = detail.message;
+      });
+      this.setState({ errors });
+      return;
+    }
 
     const newNote = {
       text: this.state.form.text,
@@ -28,6 +40,7 @@ class Form extends Component {
     };
 
     this.props.addData(newNote);
+    this.setState({ errors: {} });
   };
 
   handleInputChange = e => {
@@ -40,30 +53,40 @@ class Form extends Component {
 
   render() {
     const { categories } = this.props;
-    const { form } = this.state;
+    const { form, errors } = this.state;
 
     return (
+      <>
       <form className="note-form" onSubmit={this.handleSubmit}>
+        <div>
         <input
-          type="text"
-          placeholder="Add a new note..."
-          value={form.text}
-          onChange={this.handleInputChange}
-          name="text"
+        className={errors.category ? 'note-form-warning' : ''}
+        type="text"
+        placeholder="Add a new note..."
+        value={form.text}
+        onChange={this.handleInputChange}
+        name="text"
         />
-        <span>{200 - form.text.length}</span>
+        {errors.text && <span className='note-form-warning-text'>{errors.text}</span>}
+        </div>
+        <div>
         <input
-          type="text"
-          placeholder="Source(http://)"
-          value={form.source}
-          onChange={this.handleInputChange}
-          name="source"
+        className={errors.category ? 'note-form-warning' : ''}
+        type="text"
+        placeholder="Source(http://)"
+        value={form.source}
+        onChange={this.handleInputChange}
+        name="source"
         />
+        {errors.source && <span>{errors.source}</span>}
+        </div>
+        <div>
         <select
+          className={errors.category ? 'note-form-warning' : ''}
           value={form.category}
           onChange={this.handleInputChange}
           name="category"
-        >
+          >
           <option value="">Choose category:</option>
           {categories.map(category => (
             <option key={category.name} value={category.name}>
@@ -71,10 +94,13 @@ class Form extends Component {
             </option>
           ))}
         </select>
+        {errors.category && <span>{errors.category}</span>}
+        </div>
         <button className="btn btn-large" type="submit">
           ADD
         </button>
       </form>
+      </>
     );
   }
 }
