@@ -1,18 +1,33 @@
 import './App.css';
-import { getCategories, getInitialNotes } from './FakeNoteServices';
+import { getCategories} from './FakeNoteServices';
 import React, { Component } from 'react';
 import Header from './components/header';
 import Form from './components/form';
 import Category from './components/categories';
 import Note from './components/note';
+import axios from 'axios';
+
 
 class App extends Component {
   state = {
     categories: getCategories(),
-    notes: getInitialNotes(),
+    notes: [],
     showForm: false,
     selectedCategory: null,
   };
+
+
+  async componentDidMount() {
+    try {
+      const { data: notes } = await axios.get('http://localhost:4000/api/notes/');
+      this.setState({
+        notes:notes
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
 
   handleShowForm = () => {
     const updatedShowForm = !this.state.showForm;
@@ -21,18 +36,31 @@ class App extends Component {
     });
   };
 
-  handleDelete = note => {
-    const updatedNotes = this.state.notes.filter(n => n.id !== note.id);
-    this.setState({
-      notes: updatedNotes,
-    });
+  handleDelete = async note => {
+    try {
+      await axios.delete(`http://localhost:4000/api/notes/${note._id}`)
+      
+      const updatedNotes = this.state.notes.filter(n => n._id !== note._id);
+      this.setState({
+        notes: updatedNotes,
+      });
+      
+    } catch (error) {
+      console.error(error);      
+    }
   };
 
-  addData = newData => {
-    const updatedNotes = [newData, ...this.state.notes];
-    this.setState({
-      notes: updatedNotes,
-    });
+  addData = async newData => {
+    try {
+      const { data: newNote}  =  await axios.post('http://localhost:4000/api/notes', newData)
+      const updatedNotes = [newNote, ...this.state.notes];
+      this.setState({
+        notes: updatedNotes,
+      });      
+    } catch (error) {
+      console.error(error);      
+    }
+
   };
 
   handleCategory = categoryName => {
@@ -45,6 +73,9 @@ class App extends Component {
     const { showForm, categories, notes, selectedCategory } = this.state;
     return (
       <>
+      <div className='warning'>🚨 UYARI: Formda boş alan bırakıldığında veya source yanlış formatta girildiğinde sistem çökmektedir. 🚨
+      <br></br> 
+      Bir sonraki committe problem çözülecektir...🎉</div>
         <Header showForm={showForm} onShowForm={this.handleShowForm} />
         {showForm && <Form addData={this.addData} categories={categories} />}
         <main className="main">

@@ -21,17 +21,17 @@ class Note extends Component {
 
     if (categoriseNotes.length >= pageSize)
       notes = this.paginateNote(categoriseNotes);
-
     return (
       <div className="container-note-pagination">
         <ul className="notes">
           {notes.map(note => (
-            <li key={note.id} className="note">
+            <li key={note._id} className="note">
               <p>
                 {note.text}
                 <a
                   className="source"
                   href={note.source ? note.source : undefined}
+                  rel='noreferrer'
                   target="_blank"
                 >
                   ({this.formatSource(note)})

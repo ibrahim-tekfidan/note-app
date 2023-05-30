@@ -22,7 +22,6 @@ class Form extends Component {
     // if (errors) return;
 
     const newNote = {
-      id: Date.now(),
       text: this.state.form.text,
       source: this.state.form.source,
       category: this.state.form.category,
@@ -38,27 +37,30 @@ class Form extends Component {
       form: updatedForm,
     });
   };
+
   render() {
     const { categories } = this.props;
+    const { form } = this.state;
+
     return (
       <form className="note-form" onSubmit={this.handleSubmit}>
         <input
           type="text"
           placeholder="Add a new note..."
-          value={this.state.text}
+          value={form.text}
           onChange={this.handleInputChange}
           name="text"
         />
-        <span>{200 - this.state.form.text.length}</span>
+        <span>{200 - form.text.length}</span>
         <input
           type="text"
           placeholder="Source(http://)"
-          value={this.state.source}
+          value={form.source}
           onChange={this.handleInputChange}
           name="source"
         />
         <select
-          value={this.state.category}
+          value={form.category}
           onChange={this.handleInputChange}
           name="category"
         >

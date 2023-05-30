@@ -5,7 +5,7 @@ const router = express.Router();
 // GET
 router.get('/', async(req, res) => {
   try {
-    const notes = await Note.find();
+    const notes = await Note.find().sort({date: -1});
     res.status(200).send(notes);
   } catch (error) {
     res.status(500).send('An error occurred.The course with the given ID was not found.');

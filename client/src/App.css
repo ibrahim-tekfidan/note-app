@@ -261,3 +261,11 @@ ul {
 .btn-page-active {
   background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
 }
+
+.warning {
+  
+  padding: 20px 0;
+  background-color: #ef4444;
+  font-size: 32px;
+  margin-bottom: 16px;
+}

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 // Creating model => Class 
 const Note = mongoose.model('Note',new mongoose.Schema({
+  date: {type: Date, default:Date.now},
   text: {
     type: String,
     maxlength:200,
